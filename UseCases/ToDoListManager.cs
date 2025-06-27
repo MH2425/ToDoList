@@ -2,27 +2,28 @@
 
 namespace UseCases
 {
-    public class ToDoListManager(IToDoItemRepository repository)
+    public class ToDoListManager(IUnitOfWork<ToDoItem> unitOfWork)
     {
-        private readonly IToDoItemRepository repository = repository;
+        private readonly IUnitOfWork<ToDoItem> _unitOfWork = unitOfWork;
 
         public IEnumerable<ToDoItem> GetToDoItems()
         {
-            return repository.GetItems();
+            return _unitOfWork.Repository.GetAll();
         }
 
         public void AddToDoItem(ToDoItem item)
         {
-            repository.Add(item);
+            _unitOfWork.Repository.Add(item);
+            _unitOfWork.Save();
         }
 
         public void MarkComplete(int id)
         {
-            var item = repository.GetById(id);
+            var item = _unitOfWork.Repository.GetById(id);
             if (item != null)
             {
                 item.IsCompleted = !item.IsCompleted;
-                repository.Update(item);
+                _unitOfWork.Repository.Update(item);
             }
             else
             {
@@ -32,12 +33,12 @@ namespace UseCases
 
         public void Delete(int id)
         {
-            repository.Delete(id);
+            _unitOfWork.Repository.Delete(id);
         }
 
         public void Update(ToDoItem item)
         {
-            repository.Update(item);
+            _unitOfWork.Repository.Update(item);
         }
     }
 }

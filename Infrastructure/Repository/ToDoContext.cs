@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 
-namespace Infrastructure
+namespace Infrastructure.Repository
 {
     public class ToDoContext : DbContext
     {

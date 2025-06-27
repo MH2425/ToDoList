@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure
+namespace Infrastructure.Repository
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ToDoContext>
     {

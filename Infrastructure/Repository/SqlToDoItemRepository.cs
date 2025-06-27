@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UseCases;
 
-namespace Infrastructure
+namespace Infrastructure.Repository
 {
     public class SqlToDoItemRepository : IToDoItemRepository
     {

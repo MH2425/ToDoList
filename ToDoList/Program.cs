@@ -1,4 +1,5 @@
-using Infrastructure;
+using Infrastructure.Repository;
+using Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using UseCases;
 
@@ -20,7 +21,12 @@ namespace ToDoList
                     builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
 
-            builder.Services.AddScoped<IToDoItemRepository, SqlToDoItemRepository>();
+            //builder.Services.AddScoped<IToDoItemRepository, SqlToDoItemRepository>();
+            //builder.Services.AddTransient<ToDoListManager>();
+
+            builder.Services.AddScoped<DbContext>(provider => provider.GetService<ToDoContext>());
+            builder.Services.AddScoped<IRepository<ToDoItem>, GenericRepository<ToDoItem>>();
+            builder.Services.AddScoped<IUnitOfWork<ToDoItem>, UnitOfWork<ToDoItem>>();
             builder.Services.AddTransient<ToDoListManager>();
 
             var app = builder.Build();

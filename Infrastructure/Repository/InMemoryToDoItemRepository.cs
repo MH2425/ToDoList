@@ -1,7 +1,7 @@
 ﻿using Entities;
 using UseCases;
 
-namespace Infrastructure
+namespace Infrastructure.Repository
 {
     public class InMemoryToDoItemRepository : IToDoItemRepository
     {
