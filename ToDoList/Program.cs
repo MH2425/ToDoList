@@ -1,4 +1,5 @@
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using UseCases;
 
 namespace ToDoList
@@ -11,7 +12,15 @@ namespace ToDoList
 
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddSingleton<IToDoItemRepository, InMemoryToDoItemRepository>();
+            //builder.Services.AddSingleton<IToDoItemRepository, InMemoryToDoItemRepository>();
+            //builder.Services.AddTransient<ToDoListManager>();
+
+            builder.Services.AddDbContext<ToDoContext>(options =>
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"))
+                );
+
+            builder.Services.AddScoped<IToDoItemRepository, SqlToDoItemRepository>();
             builder.Services.AddTransient<ToDoListManager>();
 
             var app = builder.Build();
@@ -32,6 +41,12 @@ namespace ToDoList
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ToDoContext>();
+                dbContext.Database.Migrate();
+            }
 
             app.Run();
         }

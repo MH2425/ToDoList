@@ -11,6 +11,6 @@
             Text = text;
             IsCompleted = isCompleted;
         }
-        public Item() { } // Parameterless constructor for model binding
+        public Item() { } 
     }
 }
