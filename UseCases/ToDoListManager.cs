@@ -34,11 +34,13 @@ namespace UseCases
         public void Delete(int id)
         {
             _unitOfWork.Repository.Delete(id);
+            _unitOfWork.Save();
         }
 
         public void Update(ToDoItem item)
         {
             _unitOfWork.Repository.Update(item);
+            _unitOfWork.Save();
         }
     }
 }
