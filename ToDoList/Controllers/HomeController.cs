@@ -142,6 +142,21 @@ namespace ToDoList.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult ClearAll()
+        {
+            try
+            {
+                _listManager.ClearItems();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to clear all items");
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

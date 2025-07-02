@@ -11,7 +11,7 @@ namespace UseCases
     {
         void Add(ToDoItem item);
         void Delete(int id);
-        ToDoItem? GetById(int id); // Nullable to handle cases where the item might not be found
+        ToDoItem? GetById(int id); 
         IEnumerable<ToDoItem> GetItems();
         void Update(ToDoItem item);
     }

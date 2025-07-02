@@ -17,6 +17,11 @@ namespace UseCases
             _unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Toggle completion of each item in database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="KeyNotFoundException"></exception>
         public void MarkComplete(int id)
         {
             var item = _unitOfWork.Repository.GetById(id);
@@ -24,6 +29,7 @@ namespace UseCases
             {
                 item.IsCompleted = !item.IsCompleted;
                 _unitOfWork.Repository.Update(item);
+                _unitOfWork.Save();
             }
             else
             {
@@ -40,6 +46,19 @@ namespace UseCases
         public void Update(ToDoItem item)
         {
             _unitOfWork.Repository.Update(item);
+            _unitOfWork.Save();
+        }
+
+        /// <summary>
+        /// Reset the database
+        /// </summary>
+        public void ClearItems()
+        {
+            var items = GetToDoItems().ToList();
+            foreach (var item in items)
+            {
+                _unitOfWork.Repository.Delete(item.Id);
+            }
             _unitOfWork.Save();
         }
     }

@@ -27,4 +27,10 @@
         }
     </ul>
     <a class="btn btn-primary mt-3" href="/Home/Add">Add</a>
+
+    @* Clear data button *@
+    <form asp-action="ClearAll" method="post" style="margin-top: 0.5rem"
+        onsubmit="return confirm('Are you sure you want to delete ALL items? This cannot be undone.');">
+        <button type="submit" class="btn btn-danger mb-3">Clear All Items</button>
+    </form>
 </div>

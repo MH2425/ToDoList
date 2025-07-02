@@ -33,6 +33,10 @@ namespace Infrastructure.UnitOfWork
             _context.Entry(entity).State = EntityState.Modified;
         }
 
+        /// <summary>
+        /// Reverts all pending changes.
+        /// Cancel modifications before they're committed to the database.
+        /// </summary>
         public void Rollback()
         {
             foreach (var entry in _context.ChangeTracker.Entries())
@@ -52,12 +56,22 @@ namespace Infrastructure.UnitOfWork
             }
         }
 
+        /// <summary>
+        /// Implements IDisposable to release resources when the UnitOfWork is no longer needed.
+        /// This enables using the UnitOfWork within a 'using' statement for automatic cleanup.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+
+        /// <summary>
+        /// Protected implementation of Dispose pattern.
+        /// </summary>
+        /// <param name="dispose">True if called directly by user code; 
+        /// False if called by the garbage collector finalizer</param>
         protected void Dispose(bool dispose)
         {
             if (!_disposed)
