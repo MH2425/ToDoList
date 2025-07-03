@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /Infrastructure/Repository/InMemoryToDoItemRepository.cs
 /Infrastructure/Repository/SqlToDoItemRepository.cs
 /Infrastructure/Repository/DesignTimeDbContextFactory.cs
+/ToDoList/GlobalUsing.cs
+/UseCases/IToDoItemRepository.cs
