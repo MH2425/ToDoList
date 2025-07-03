@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Infrastructure/Repository/InMemoryToDoItemRepository.cs
+/Infrastructure/Repository/SqlToDoItemRepository.cs
+/Infrastructure/Repository/DesignTimeDbContextFactory.cs
