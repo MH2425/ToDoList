@@ -1,22 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UseCases;
 
 namespace Infrastructure.Repository
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        protected readonly DbContext _context;
+        protected readonly IUnitOfWork<T> _unitOfWork;
         protected readonly DbSet<T> _dbSet;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(IUnitOfWork<T> unitOfWork)
         {
-            _context = context;
-            _dbSet = context.Set<T>();
+            _unitOfWork = unitOfWork;
+            _dbSet = _unitOfWork.Db.Set<T>();
         }
 
         public void Add(T entity)
@@ -50,7 +45,7 @@ namespace Infrastructure.Repository
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            _unitOfWork.Db.Entry(entity).State = EntityState.Modified;
         }
     }
 }

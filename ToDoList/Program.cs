@@ -13,20 +13,14 @@ namespace ToDoList
 
             builder.Services.AddControllersWithViews();
 
-            //builder.Services.AddSingleton<IToDoItemRepository, InMemoryToDoItemRepository>();
-            //builder.Services.AddTransient<ToDoListManager>();
-
             builder.Services.AddDbContext<ToDoContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
 
-            //builder.Services.AddScoped<IToDoItemRepository, SqlToDoItemRepository>();
-            //builder.Services.AddTransient<ToDoListManager>();
-
             builder.Services.AddScoped<DbContext>(provider => provider.GetService<ToDoContext>());
-            builder.Services.AddScoped<IRepository<ToDoItem>, GenericRepository<ToDoItem>>();
             builder.Services.AddScoped<IUnitOfWork<ToDoItem>, UnitOfWork<ToDoItem>>();
+            builder.Services.AddScoped<IRepository<ToDoItem>, GenericRepository<ToDoItem>>();
             builder.Services.AddTransient<ToDoListManager>();
 
             var app = builder.Build();

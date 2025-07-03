@@ -2,18 +2,23 @@
 
 namespace UseCases
 {
-    public class ToDoListManager(IUnitOfWork<ToDoItem> unitOfWork)
+    public class ToDoListManager
     {
-        private readonly IUnitOfWork<ToDoItem> _unitOfWork = unitOfWork;
+        private readonly IUnitOfWork<ToDoItem> _unitOfWork;
+
+        public ToDoListManager(IUnitOfWork<ToDoItem> unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
         public IEnumerable<ToDoItem> GetToDoItems()
         {
-            return _unitOfWork.Repository.GetAll();
+            return _unitOfWork.Db.Set<ToDoItem>().ToList();
         }
 
         public void AddToDoItem(ToDoItem item)
         {
-            _unitOfWork.Repository.Add(item);
+            _unitOfWork.Db.Set<ToDoItem>().Add(item);
             _unitOfWork.Save();
         }
 
@@ -24,11 +29,11 @@ namespace UseCases
         /// <exception cref="KeyNotFoundException"></exception>
         public void MarkComplete(int id)
         {
-            var item = _unitOfWork.Repository.GetById(id);
+            var item = _unitOfWork.Db.Set<ToDoItem>().Find(id);
             if (item != null)
             {
                 item.IsCompleted = !item.IsCompleted;
-                _unitOfWork.Repository.Update(item);
+                _unitOfWork.Edit(item);
                 _unitOfWork.Save();
             }
             else
@@ -39,13 +44,21 @@ namespace UseCases
 
         public void Delete(int id)
         {
-            _unitOfWork.Repository.Delete(id);
-            _unitOfWork.Save();
+            var item = _unitOfWork.Db.Set<ToDoItem>().Find(id);
+            if (item != null)
+            {
+                _unitOfWork.Db.Set<ToDoItem>().Remove(item);
+                _unitOfWork.Save();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Item ID:{id} not found");
+            }
         }
 
         public void Update(ToDoItem item)
         {
-            _unitOfWork.Repository.Update(item);
+            _unitOfWork.Edit(item);
             _unitOfWork.Save();
         }
 
@@ -57,7 +70,7 @@ namespace UseCases
             var items = GetToDoItems().ToList();
             foreach (var item in items)
             {
-                _unitOfWork.Repository.Delete(item.Id);
+                _unitOfWork.Db.Set<ToDoItem>().Remove(item);
             }
             _unitOfWork.Save();
         }
