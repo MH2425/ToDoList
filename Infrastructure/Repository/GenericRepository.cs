@@ -5,13 +5,13 @@ namespace Infrastructure.Repository
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        protected readonly IUnitOfWork<T> _unitOfWork;
+        protected readonly DbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public GenericRepository(IUnitOfWork<T> unitOfWork)
+        public GenericRepository(DbContext context)
         {
-            _unitOfWork = unitOfWork;
-            _dbSet = _unitOfWork.Db.Set<T>();
+            _context = context;
+            _dbSet = context.Set<T>();
         }
 
         public void Add(T entity)
@@ -45,7 +45,7 @@ namespace Infrastructure.Repository
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
-            _unitOfWork.Db.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

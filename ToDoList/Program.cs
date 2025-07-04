@@ -18,7 +18,7 @@ namespace ToDoList
                     builder.Configuration.GetConnectionString("DefaultConnection"))
                 );
 
-            builder.Services.AddScoped<DbContext>(provider => provider.GetService<ToDoContext>());
+            builder.Services.AddScoped<DbContext>(provider => provider.GetRequiredService<ToDoContext>());
             builder.Services.AddScoped<IUnitOfWork<ToDoItem>, UnitOfWork<ToDoItem>>();
             builder.Services.AddScoped<IRepository<ToDoItem>, GenericRepository<ToDoItem>>();
             builder.Services.AddTransient<ToDoListManager>();
